@@ -1,10 +1,13 @@
-body {
+html, body {
 
     background-color: #0099CC;
 
     /* text */
     font-family: sans-serif;
     color: white;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
 
     margin: 0px;
     /* put the goku image in the background */
@@ -13,13 +16,14 @@ body {
     background-size: 20%;
     background-position: 90% 80%;
     background-repeat: no-repeat;
+    animation: flyingNimbus 10s linear;
 }
 
 header {
     display: flex;
     background-color:#EE6611;
 
-    height:50px;  
+    height:60px;  
     font-size: 24px;
     font-weight: 600;
     justify-content: space-between;
@@ -28,7 +32,7 @@ header {
 }
 
 menu {
-    height: 40px;
+    height: 80%;
     font-size: 24px;
 
     /* inserting the right border */
@@ -64,16 +68,13 @@ li:hover {
     cursor: pointer;
     padding: 10px;
     border-radius: 10px;
-    background-color: rgba(0,0,0,0.5);
-}
-
-form {
-    justify-content: space-between;
-    height: 100%;
-    width: 200px;
+    background-color: rgba(0,0,0,0.3);
 }
 
 #search {
+    justify-content: space-between;
+    height: 100%;
+    width: 200px;
     border-radius: 10px;
     background-color: white;
     margin-right: 20px;
@@ -102,6 +103,61 @@ input {
 }
 
 
+fieldset {
+    display: flex;    
+    border: none;
+    background-color: #EE6611;
+    display: flex;
+    width: 350px;
+    margin: 80px auto;
+    align-items: center;
+    box-shadow: 0px 1px 3px 1px rgb(0,0,0,0.8);
+}
+
+.form {
+    color: black;
+    display: flex;
+    flex-direction: column;
+    height: 450px;
+    width: 220px;
+    margin: 0 auto;
+    justify-content: space-between;
+}
+
+#signup label {
+    float: left;
+    text-align: left;
+    margin: 5px;
+}
+
+#signup input{
+    height: 36px;
+    font-size: 16px;
+    text-align: center;
+}
+
+#signup .login-input {
+    background-color: rgb(255,255,255,0.3);
+    border-bottom: solid 2px rgb(0,0,0,0.7);
+}
+
+#signup legend {
+    font-weight: 500;
+    font-size: 24px;
+    color: #0077AA;
+}
+
+.login-button {
+    color: white;
+    background-color: #0099CC;
+    border-radius: 3px;
+    border: solid 1px rgb(0,0,0,0.1);
+}
+
+.login-button:hover {
+    cursor: pointer;
+}
+
 /* chevron down */
 .navbar li:not(:hover)::after {
     content: "";
@@ -127,7 +183,21 @@ input {
     height: 8px;
     border-bottom: 2px solid;
     border-right: 2px solid;
+    transition: transform 0.5s ease;
     transform: rotate(225deg);
     left: 4px;
     top: 2px;
+}
+
+@keyframes flyingNimbus {
+    0% {background-position: -20% 0%;}
+    20% {background-position: 120% 20%;}
+    20.01% {background-position: -20% 20%;}
+    40% {background-position: 120% 40%;}
+    40.01% {background-position: -20% 40%;}
+    60% {background-position: 120% 50%;}
+    60.01% {background-position: -20% 50%;}
+    80% {background-position: 120% 70%;}
+    80.01% {background-position: -20% 70%;}
+    100% {background-position: 90% 80%;}
 }
