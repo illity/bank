@@ -34,6 +34,8 @@ async function newUser(data) {
     await client.connect();
     const db = client.db(dbName);
     const collection = db.collection('accounts');
+    // pass the user's sha256 password through sha256 again on serverside
+    data['encryptedPass'] = await sha256(data['encryptedPass'])
     const result = await collection.insertOne(data)
     return result
 }
@@ -45,8 +47,10 @@ async function validateLogin(login, encryptedPass) {
         const collection = db.collection('accounts');
         const result = await collection.findOne(login)
         if (result) {
-            console.log(result['encryptedPass'])
-            console.log(encryptedPass)
+            const storedEncryptedPass = result['encryptedPass']
+            encryptedPass = await sha256(encryptedPass)
+            if (result['encryptedPass']==encryptedPass) return true
+            else throw new Error('Login and password do not match. Please check your username and try again.')
         } else {
             throw new Error('Login does not exist. Please check your username and try again.')
         }
