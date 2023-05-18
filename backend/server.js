@@ -1,14 +1,16 @@
 const http = require('http');
 const crypto = require('crypto')
 const { MongoClient } = require('mongodb');
+const fs = require('fs')
 
 const hostname = '127.0.0.1';
 const port = 3000;
 
-const dbUrl = 'mongodb://127.0.0.1:27017';
-const client = new MongoClient(dbUrl);
 const dbName = 'mydb';
-
+const data = fs.readFileSync('../../dbCredentials.json', 'utf8')
+const dbCredentials = JSON.parse(data);
+const dbUrl = `mongodb+srv://${dbCredentials.login}:${dbCredentials.pass}@cluster0.byet7nj.mongodb.net/`;
+const client = new MongoClient(dbUrl);
 
 const server = http.createServer((request, response) => {
     request.on('data', (chunk) => {
