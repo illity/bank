@@ -1,8 +1,18 @@
 // Constants
-const serverUrl = 'http://127.0.0.1:3000/'
+async function fetchServerUrl() {
+    try {
+        const response = await fetch('js/config.json');
+        const data = await response.json();
+        return data;
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+}
+const serverUrl = fetchServerUrl();
+  
 
 // Partials
-fetch('../partials/nav.html')
+fetch('partials/nav.html')
     .then(response => response.text())
     .then(data => {
         const navElement = document.getElementById('nav');
@@ -11,10 +21,10 @@ fetch('../partials/nav.html')
     .catch(error => {console.error('Erro ao carregar o arquivo nav.html:', error)});
 
 const signupElement = document.getElementById('signup');
-const loginElement = document.getElementById("login")
+const loginElement = document.getElementById('login')
 
 if (signupElement) {
-    fetch('../partials/signup.html')
+    fetch('partials/signup.html')
         .then(response => response.text())
         .then(data => {
             signupElement.innerHTML = data;
@@ -30,11 +40,16 @@ if (signupElement) {
                     console.log("Name: " + name);
                     console.log("Email: " + email);
                     console.log("password SHA256: " + passwordSHA256);
-                    fetchAsync(serverUrl, {
-                        name: name,
-                        email: email,
-                        encryptedPass: passwordSHA256
-                    })
+                    serverUrl
+                        .then(response => response.url)
+                        .then(url => {
+                            console.log(url)
+                            fetchAsync(url, {
+                               name: name,
+                                email: email,
+                                encryptedPass: passwordSHA256
+                            })
+                        })
                 }
                 hash.then(storeData)
                     .catch(error => { console.error('Erro ao gerar SHA256 da senha:', error) })
@@ -63,5 +78,6 @@ async function fetchAsync (url, data) {
         body: JSON.stringify(data)
     });
     let responseText = await response.text();
+    console.log(responseText)
     return responseText;
 }
