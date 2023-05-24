@@ -1,7 +1,7 @@
 // Constants
 async function fetchServerUrl() {
     try {
-        const response = await fetch('js/config.json');
+        const response = await fetch('config.json');
         const data = await response.json();
         return data;
     } catch (error) {
