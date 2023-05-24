@@ -3,13 +3,14 @@ const crypto = require('crypto');
 const { MongoClient } = require('mongodb');
 const fs = require('fs');
 
-const hostname = '127.0.0.1';
-const port = 3000;
+const data = fs.readFileSync('config.json', 'utf8')
+const config = JSON.parse(data);
+
+const hostname = config.hostname;
+const port = config.port;
 
 const dbName = 'mydb';
-const data = fs.readFileSync('../../dbCredentials.json', 'utf8')
-const dbCredentials = JSON.parse(data);
-const dbUrl = `mongodb+srv://${dbCredentials.login}:${dbCredentials.pass}@cluster0.byet7nj.mongodb.net/`;
+const dbUrl = `mongodb+srv://${config.dbLogin}:${config.dbPass}@cluster0.byet7nj.mongodb.net/`;
 const client = new MongoClient(dbUrl);
 
 const server = http.createServer((request, response) => {
@@ -68,19 +69,3 @@ async function sha256(message) {
     const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
     return hashHex;
 }
-
-// Get the url of forwarding from ngrok and store it so the clientside can use
-fetch('http://127.0.0.1:4040/api/tunnels/first')
-    .then(response => response.json())
-    .then(data => {
-        const ngrokURL = data.public_url;
-        fs.writeFile('../js/config.json', `{\n    "port": 80,\n    "url": "${data.public_url}"\n}`, (error) => {
-            if (error) {
-                console.error('Error writing file:', error);
-                return;
-            }
-            console.log('URL written on the clientside!');
-        })
-        console.log('ngrok URL:', ngrokURL);
-    })
-    .catch(error => console.error('Error retrieving ngrok URL:', error));
