@@ -12,6 +12,8 @@ const port = config.port;
 const dbName = 'mydb';
 const dbUrl = `mongodb+srv://${config.dbLogin}:${config.dbPass}@cluster0.byet7nj.mongodb.net/`;
 const client = new MongoClient(dbUrl);
+console.log(dbName)
+console.log(dbUrl)
 
 const app = express()
 
@@ -22,21 +24,24 @@ app.use((req, res, next) => {
 
 app.post('/signup', (req,res) => {
     req.on('data', chunk => {
-        newUser(JSON.parse(chunk.toString()))
+        const data = chunk.toString()
+        console.log(data)
+        newUser(JSON.parse(data))
     })
     .on('end', function(){
-    return res.redirect('index.html')
+        return res
     });
 })
 
 app.get('/',function(req,res){
     res.set({
         'Access-control-Allow-Origin': '*'
-        });
-    return res.redirect('bank/index.html');
-}).listen(3000)
+    });
+    return res
+})
 
-console.log("server listening at port 3000");
+app.listen(port, () => {console.log(`server listening at port ${port}`);})
+
 
 async function newUser(data) {
     await client.connect();
