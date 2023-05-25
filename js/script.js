@@ -43,9 +43,8 @@ if (signupElement) {
                     serverUrl
                         .then(response => response.url)
                         .then(url => {
-                            console.log(url)
-                            fetchAsync(url, {
-                               name: name,
+                            fetchAsync(`${url}signup`, {
+                                name: name,
                                 email: email,
                                 encryptedPass: passwordSHA256
                             })
@@ -73,7 +72,7 @@ async function fetchAsync (url, data) {
     let response = await fetch(url, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'text/plain'
         },
         body: JSON.stringify(data)
     });

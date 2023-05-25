@@ -1,4 +1,4 @@
-const http = require('http');
+const express = require('express');
 const crypto = require('crypto');
 const { MongoClient } = require('mongodb');
 const fs = require('fs');
@@ -13,25 +13,30 @@ const dbName = 'mydb';
 const dbUrl = `mongodb+srv://${config.dbLogin}:${config.dbPass}@cluster0.byet7nj.mongodb.net/`;
 const client = new MongoClient(dbUrl);
 
-const server = http.createServer((request, response) => {
-    request.on('data', (chunk) => {
-        const data = chunk.toString();
-        newUser(JSON.parse(data))
-            .then(result => console.log(result))
-            .catch(error => console.error(error))
-            .finally(() => client.close());
-    }).on('end', () => {
-        response.statusCode = 200;
-        response.setHeader('Content-Type', 'text/plain');
-        response.setHeader("Access-Control-Allow-Origin", "*");
-        response.setHeader("Access-Control-Allow-Headers", "*");
-        response.end("");
-    });
-});
+const app = express()
 
-server.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`);
-});
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    next();
+})
+
+app.post('/signup', (req,res) => {
+    req.on('data', chunk => {
+        newUser(JSON.parse(chunk.toString()))
+    })
+    .on('end', function(){
+    return res.redirect('index.html')
+    });
+})
+
+app.get('/',function(req,res){
+    res.set({
+        'Access-control-Allow-Origin': '*'
+        });
+    return res.redirect('bank/index.html');
+}).listen(3000)
+
+console.log("server listening at port 3000");
 
 async function newUser(data) {
     await client.connect();
