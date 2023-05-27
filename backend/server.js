@@ -44,11 +44,11 @@ app.listen(port, () => {console.log(`server listening at port ${port}`);})
 
 
 async function newUser(data) {
+    console.log(data)
     await client.connect();
     const db = client.db(dbName);
     const collection = db.collection('accounts');
     // pass the user's sha256 password through sha256 again on serverside
-    data['encryptedPass'] = await sha256(data['encryptedPass'])
     const result = await collection.insertOne(data)
     return result
 }
@@ -60,8 +60,6 @@ async function validateLogin(login, encryptedPass) {
         const collection = db.collection('accounts');
         const result = await collection.findOne(login)
         if (result) {
-            const storedEncryptedPass = result['encryptedPass']
-            encryptedPass = await sha256(encryptedPass)
             if (result['encryptedPass']==encryptedPass) return true
             else throw new Error('Login and password do not match. Please check your username and try again.')
         } else {
