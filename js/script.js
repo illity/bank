@@ -17,13 +17,32 @@ fetch('partials/nav.html')
     .then(data => {
         const navElement = document.getElementById('nav');
         navElement.innerHTML = data;
+        const signupElement = document.getElementById('signupButton')
+        signupElement.addEventListener('click', () => {
+            let form = document.getElementById('signup');
+            if (form) {
+                form.parentElement.parentElement.parentElement.removeChild(form.parentElement.parentElement);
+                return;
+            }
+            form = document.createElement('div');
+            configSignup(form)
+            document.body.appendChild(form);
+        })
     })
     .catch(error => {console.error('Erro ao carregar o arquivo nav.html:', error)});
 
-const signupElement = document.getElementById('signup');
 const loginElement = document.getElementById('login')
 
-if (signupElement) {
+// Functions
+async function sha256(message) {
+    const msgBuffer = new TextEncoder().encode(message);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    return hashHex;
+}
+
+function configSignup(signupElement) {
     fetch('partials/signup.html')
         .then(response => response.text())
         .then(data => {
@@ -57,15 +76,6 @@ if (signupElement) {
         .catch(error => {
             console.error('Erro ao carregar o arquivo signup.html:', error);
         });
-}
-
-// Functions
-async function sha256(message) {
-    const msgBuffer = new TextEncoder().encode(message);
-    const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-    const hashArray = Array.from(new Uint8Array(hashBuffer));
-    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-    return hashHex;
 }
 
 async function fetchAsync (url, data) {
