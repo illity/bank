@@ -18,14 +18,33 @@ fetch('partials/nav.html')
         const navElement = document.getElementById('nav');
         navElement.innerHTML = data;
         const signupElement = document.getElementById('signupButton')
+        const loginElement = document.getElementById('loginButton')
         signupElement.addEventListener('click', () => {
-            let form = document.getElementById('signup');
-            if (form) {
+            let form = document.getElementsByClassName('form')
+            if (form.length != 0) {
+                form = form[0]
+            }
+            if (form.length != 0) {
+                console.log(form.parentElement)
                 form.parentElement.parentElement.parentElement.removeChild(form.parentElement.parentElement);
                 return;
             }
             form = document.createElement('div');
             configSignup(form)
+            document.body.appendChild(form);
+        })
+        loginElement.addEventListener('click', () => {
+            let form = document.getElementsByClassName('form')
+            if (form.length != 0) {
+                form = form[0]
+            }
+            if (form.length != 0) {
+                console.log(form.parentElement)
+                form.parentElement.parentElement.parentElement.removeChild(form.parentElement.parentElement);
+                return;
+            }
+            form = document.createElement('div');
+            configLogin(form)
             document.body.appendChild(form);
         })
     })
@@ -75,6 +94,20 @@ function configSignup(signupElement) {
         })
         .catch(error => {
             console.error('Erro ao carregar o arquivo signup.html:', error);
+        });
+}
+
+function configLogin(loginElement) {
+    fetch('partials/login.html')
+        .then(response => response.text())
+        .then(data => {
+            loginElement.innerHTML = data;
+            loginElement.addEventListener("submit", function (event) {
+                event.preventDefault();
+            });
+        })
+        .catch(error => {
+            console.error('Erro ao carregar o arquivo login.html:', error);
         });
 }
 

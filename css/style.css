@@ -124,24 +124,24 @@ fieldset {
     justify-content: space-between;
 }
 
-#signup label {
+form label {
     float: left;
     text-align: left;
     margin: 5px;
 }
 
-#signup input{
+form input{
     height: 36px;
     font-size: 16px;
     text-align: center;
 }
 
-#signup .login-input {
+.login-input {
     background-color: rgb(255,255,255,0.3);
     border-bottom: solid 2px rgb(0,0,0,0.7);
 }
 
-#signup legend {
+form legend {
     font-weight: 500;
     font-size: 24px;
     color: #0077AA;
