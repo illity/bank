@@ -104,6 +104,8 @@ function configLogin(loginElement) {
             loginElement.innerHTML = data;
             loginElement.addEventListener("submit", function (event) {
                 event.preventDefault();
+                login = event.target[0].value;
+                password = event.target[1].value;
             });
         })
         .catch(error => {
@@ -115,7 +117,7 @@ async function fetchAsync (url, data) {
     let response = await fetch(url, {
         method: 'POST',
         headers: {
-            'Content-Type': 'text/plain'
+            'Content-Type': 'txext/plain'
         },
         body: JSON.stringify(data)
     });
@@ -123,3 +125,6 @@ async function fetchAsync (url, data) {
     console.log(responseText)
     return responseText;
 }
+
+var login = ""
+var password = ""
